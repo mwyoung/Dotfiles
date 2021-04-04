@@ -25,6 +25,9 @@ vmap <leader>p "+p
 "Stop q: shortcut menu
 map q: :q
 
+" Vim shortcuts
+" GoTo function - ctrl + ], ctrl+t goes back, need to generate tags on command line with ctags -R .
+
 " => plugins
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'       "For git plugins for vim-airline

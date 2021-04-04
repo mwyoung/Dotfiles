@@ -33,13 +33,16 @@ bindsym Control+$mod+c exec google-chrome --profile-directory="Default" #stable
 bindsym Control+$mod+i exec google-chrome --incognito --profile-directory="Default"
 bindsym Control+$mod+h exec google-chrome --profile-directory="Profile 1"
 bindsym Control+$mod+Shift+i exec google-chrome --incognito --profile-directory="Profile 1"
+bindsym Control+$mod+Shift+h exec google-chrome --profile-directory="Profile 2"
 bindsym Control+$mod+f exec pcmanfm-qt
 bindsym Control+$mod+s exec qps
 bindsym Control+$mod+t exec $i3Term
 bindsym Control+$mod+x exec env MOZ_USE_XINPUT2=1 firefox
 bindsym Control+$mod+z exec env MOZ_USE_XINPUT2=1 firefox -private
 bindsym Control+$mod+w exec libreoffice --writer
-bindsym --release Shift+Print exec gnome-screenshot -a -i
+#area, clipboard, interactive
+bindsym --release Shift+Print exec maim -s | xclip -selection clipboard -t image/png
+bindsym --release Control+Shift+Print exec gnome-screenshot -a -c -i
 
 set $Displays External Displays: (B)oth (M)irror (D)isplayPort (V)GA (a)randr (o)ff
 mode "$Displays" {
