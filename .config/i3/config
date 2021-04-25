@@ -14,12 +14,12 @@ set $i3Term konsole
 set $i3Dir ~/.config/i3
 
 exec --no-startup-id compton $i3dir/compton.conf
-exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent #for redshift
+#exec --no-startup-id /usr/lib/geoclue-2.0/demos/agent #for redshift
 exec_always --no-startup-id pkill -f -o lxqt-notificationd #kill last process, for reload
 exec_always --no-startup-id lxqt-notificationd #need for nm-applet, else hang
 exec --no-startup-id lxqt-policykit-agent #for sudo access
 exec --no-startup-id nm-applet #networking
-exec --no-startup-id redshift-gtk
+#exec --no-startup-id redshift-gtk
 exec_always --no-startup-id feh --bg-fill ~/Pictures/Wallpapers/CurrentWallpaper.jpg
 
 #Touchpad/keyboard onfig
@@ -70,11 +70,13 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +1% # 
 bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #
 
 #Screen brightness controls - xbacklight -inc/-dec 1
-bindsym XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh i 1 #inc scr bright %
-bindsym Shift+XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh i 5
-bindsym XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh d 1 #dec scr bright %
-bindsym Shift+XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh d 5
+bindsym XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -i 1 #inc scr bright %
+bindsym Shift+XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -i 5
+bindsym XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -d 1 #dec scr bright %
+bindsym Shift+XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -d 5
 bindsym $mod+Shift+b exec --no-startup-id xbacklight -set 1
+bindsym $mod1+XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -j 1
+bindsym $mod1+XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -e 1
 
 #floating - xprop
 bindsym $mod+Shift+space floating toggle

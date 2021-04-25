@@ -7,15 +7,45 @@ if pidof -x -o $$ $(basename "$0") >/dev/null ; then
     exit
 fi
 
+usage() { echo "Usage: $0 {[-i]||[-d]}{1||5} (increase/decrease 1 or 5)
+    {[-j]||[-e]}{1} (inc/dec xrandr backlight by 0.1)" 1>&2; exit 1;}
+while getopts "idjeh" arg; do
+    case "${arg}" in
+        i) i=1 ;;
+        d) d=1 ;;
+        j) j=1 ;;
+        e) e=1 ;;
+        h) usage; exit 0 ;;
+        *) usage; exit 0 ;;
+    esac
+done
+
+#xrandr --output eDP1 --brightness 0.x
 curbrightness=$( echo "scale=0; $( xbacklight -get )/1" | bc )
+#https://manerosss.wordpress.com/2017/05/16/brightness-linux-xrandr/
+xbacklight=$(xrandr --verbose | grep eDP1 -A 10 | grep Brightness| grep -o '[0-9].*')
+newXBright=1.0
+eDP=eDP1
+extDP1=DP2
+extDP2=HDMI
+
+setXBright () {
+    xrandr --output $eDP --brightness $newXBright
+    if xrandr | grep "$extDP1 connected"; then
+        xrandr --output $extDP1 --brightness $newXBright
+    fi
+    if xrandr | grep "$extDP2 connected"; then
+        xrandr --output $extDP2 --brightness $newXBright
+    fi
+}
 
 if [[ $# -ne 2 ]]; then
     echo "bad number args, i # to inc, d # to dec"
     exit 1
 fi
 
-echo $curbrightness
-if [[ "$1" == i* ]]; then
+echo "cur: $curbrightness xback: $xbacklight"
+if [[ -n "${i}" ]]; then
      if [[ "$2" -eq 1 ]]; then
          xbacklight -inc 1
     elif [[ "$2" -eq 5 ]]; then
@@ -23,7 +53,7 @@ if [[ "$1" == i* ]]; then
     else
         echo "not increasing"
     fi
-elif [[ "$1" == d* ]]; then
+elif [[ -n "${d}" ]]; then
     if [[ "$2" -eq 1 ]]; then
         if [[ $curbrightness -ge 1 ]]; then
             xbacklight -dec 1
@@ -37,10 +67,18 @@ elif [[ "$1" == d* ]]; then
     else
         echo "not decreasing"
     fi
+elif [[ -n "${j}" ]]; then
+    if [[ "$2" -eq 1 ]] && [[ $(echo "$xbacklight < 1.0" | bc) -eq 1 ]]; then
+        newXBright=$(echo $xbacklight+0.1 | bc); setXBright
+    else
+        echo "not increasing xrandr backlight"
+    fi
+elif [[ -n "${e}" ]]; then
+    if [[ "$2" -eq 1 ]] && [[ $(echo "$xbacklight > 0.4" | bc) -eq 1 ]]; then
+        newXBright=$(echo $xbacklight-0.1 | bc); setXBright
+    else
+        echo "not decreasing xrandr backlight"
+    fi
 else
     echo "bad arguments"
 fi
-
-#if [[ $curbrightness -le 0 ]]; then
-#    xbacklight -set 1
-#fi
