@@ -74,9 +74,13 @@ bindsym XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -i 1 #inc s
 bindsym Shift+XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -i 5
 bindsym XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -d 1 #dec scr bright %
 bindsym Shift+XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -d 5
+#xrandr backlight
 bindsym $mod+Shift+b exec --no-startup-id xbacklight -set 1
 bindsym $mod1+XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -j 1
 bindsym $mod1+XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -e 1
+#night mode
+bindsym $mod+XF86MonBrightnessUp exec --no-startup-id $i3Dir/backlight.sh -n 0
+bindsym $mod+XF86MonBrightnessDown exec --no-startup-id $i3Dir/backlight.sh -n 1
 
 #floating - xprop
 bindsym $mod+Shift+space floating toggle
