@@ -28,7 +28,14 @@ curbrightness=$( echo "scale=0; $( xbacklight -get )/1" | bc )
 xbacklight=$(xrandr --verbose | grep eDP1 -A 10 | grep Brightness | grep -o '[0-9].*')
 xgamma=$(xrandr --verbose | grep eDP1 -A 10 | grep Gamma | grep -o '[0-9].*')
 newXBright=$xbacklight
-newXGamma=$xgamma
+colorAll="1.0:1.0:1.0"
+colorRedShift="1.0:0.8:0.6";
+newXGamma=$colorAll
+if [[ "$xgamma" != "$colorRedShift" ]]; then
+    newXGamma=$colorRedShift
+fi
+
+echo $newXGamma
 eDP=eDP1
 extDP1=DP2
 extDP2=HDMI
@@ -87,9 +94,9 @@ elif [[ -n "${e}" ]]; then
     fi
 elif [[ -n "${n}" ]]; then
     if [[ "$2" -eq 1 ]]; then
-        newXGamma="1.0:0.8:0.6"; setXBriGam
+        newXGamma=$colorRedShift; setXBriGam
     else
-        newXGamma="1.0:1.0:1.0"; setXBriGam
+        newXGamma=$colorAll; setXBriGam
     fi
 else
     echo "bad arguments"
